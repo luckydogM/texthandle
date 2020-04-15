@@ -12,8 +12,8 @@ export default {
       var relationShip = this.getRelationShip(this.dir)
       var arrsData = this.formatData(relationShip)
       this.dir = this.plain2Tree(arrsData)
-      var myManual = [...this.myManual]
-      var dirs = [...this.dir]
+      var myManual = this.myManual.length === 0 ? [string] : [...this.myManual]
+      var dirs = !this.dir || this.dir.length === 0 ? [] : [...this.dir]
       this.myManual = []
       this.dir = []
       this.targetCount = 0
@@ -25,7 +25,8 @@ export default {
     // 字符串加锚点处理
     formatString(string){
       var self = this
-      var strings = string.replace(/<h.*?(?:>|\/>)/g, function(match) {
+      var strings = string.trim()
+      strings = string.replace(/<h.*?(?:>|\/>)/g, function(match) {
         self.targetCount++
         var newStr = match.slice(0,-1) + ' ref="target' + self.targetCount +'">';
         return newStr
@@ -36,6 +37,9 @@ export default {
     getList (str, i, count) {
       i = i ? i : 1;
       if (i > 6) {
+        if (coun === 1) {
+          this.myManual.push(str)
+        }
         return
       }
       var reg = new RegExp("<h"+i+".+?>",'g')
@@ -53,10 +57,11 @@ export default {
         count++;
         //遍历数组继续下一个分段
         afterSplite.map((valueStr, index)=>{
-          // 判断当前节点下是否有子节点和父节点 并连接和子节点和父节点的关系
-          var firstHead = str.slice(arr[index],arr2[index]+reg2.length)
-          if (count < 2) {
-            this.myManual.push(firstHead)
+          var reg3 = new RegExp("<h" + (i + 1) +".+?>",'g')
+          var arr3 = this.getMatch(str, reg3);
+          if (count < 2 && arr3.length > 0) {
+            var firstHead = str.slice(0, arr3[0])
+            firstHead && this.myManual.indexOf(firstHead) === -1git && this.myManual.push(firstHead)
           }
           this.getList(valueStr, i+1, count)  
         })
