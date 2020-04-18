@@ -61,7 +61,7 @@ export default {
           var arr3 = this.getMatch(str, reg3);
           if (count < 2 && arr3.length > 0) {
             var firstHead = str.slice(0, arr3[0])
-            firstHead && this.myManual.indexOf(firstHead) === -1git && this.myManual.push(firstHead)
+            firstHead && this.myManual.indexOf(firstHead) === -1 && this.myManual.push(firstHead)
           }
           this.getList(valueStr, i+1, count)  
         })
